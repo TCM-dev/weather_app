@@ -1,0 +1,19 @@
+.container {
+  max-width: 1024px;
+  width: 100%;
+  padding: 2em;
+  margin: auto;
+}
+
+.title {
+  font-size: 50px;
+  font-weight: bold;
+  margin-bottom: 1em;
+}
+
+.subtitle {
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+}

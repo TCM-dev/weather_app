@@ -1,0 +1,9 @@
+.search-input {
+  padding: 1em;
+  border: solid 1px #888;
+  background-color: #222;
+  border-radius: 5px;
+  display: block;
+  width: 100%;
+  margin: 1em 0;
+}
