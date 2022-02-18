@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
-import { Coords, Meteo } from "src/types/meteo";
+import { Coords, RawWeather } from "src/types/meteo";
 import { IonPage, IonContent, IonButton } from "@ionic/react";
 import "./Favorites.css";
-import { getCoordsFromCityName, getCoordsMeteo } from "src/api/openweather";
+import {
+  getCoordsFromCityName,
+  getCurrentRawWeather,
+} from "src/api/openweather";
 import WeatherDisplay from "src/components/WeatherDisplay";
 import { Link } from "react-router-dom";
 import { Favorite } from "src/types/misc";
+import { formatRawWeatherToWeather } from "src/utils/formatter";
 
 type FavoriteMeteo = {
   city: string;
-  meteo: Meteo;
+  meteo: RawWeather;
 };
 
 const Favorites = () => {
@@ -30,7 +34,7 @@ const Favorites = () => {
 
   useEffect(() => {
     favorites.forEach((favorite) => {
-      getCoordsMeteo(favorite.coords).then((response) => {
+      getCurrentRawWeather(favorite.coords).then((response) => {
         const meteo = response.data;
         setfavoritemeteos((favoritemeteos) => [
           ...favoritemeteos,
@@ -40,27 +44,25 @@ const Favorites = () => {
     });
   }, [favorites]);
 
-  useEffect(() => {
-    // Debug purposes only
-    console.log(favorites);
-  }, [favorites]);
-
   return (
     <IonPage>
       <IonContent fullscreen>
         <div className="container">
           <h1 className="title">Vos météos favorites</h1>
-          {favoritemeteos.map((favoritemeteo) => (
-            <Link
-              key={favoritemeteo.city}
-              to={`/locationWeather?lat=${favoritemeteo.meteo.lat}&lon=${favoritemeteo.meteo.lon}&city=${favoritemeteo.city}`}
-            >
-              <div>
-                <h2>{favoritemeteo.city}</h2>
-                <WeatherDisplay weather={favoritemeteo.meteo.current} />
-              </div>
-            </Link>
-          ))}
+          <div className="favorites">
+            {favoritemeteos.map((favoritemeteo) => (
+              <Link
+                key={favoritemeteo.city}
+                to={`/locationWeather?lat=${favoritemeteo.meteo.lat}&lon=${favoritemeteo.meteo.lon}&city=${favoritemeteo.city}`}
+                className="favorite-meteo"
+              >
+                <WeatherDisplay
+                  city={favoritemeteo.city}
+                  weather={formatRawWeatherToWeather(favoritemeteo.meteo)}
+                />
+              </Link>
+            ))}
+          </div>
         </div>
       </IonContent>
     </IonPage>

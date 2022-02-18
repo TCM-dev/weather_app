@@ -17,3 +17,12 @@
   margin-top: 2em;
   margin-bottom: 0.5em;
 }
+
+.ios body, .md body {
+  --ion-background-color: #080808;
+}
+
+a {
+  text-decoration: none;
+  color: unset;
+}

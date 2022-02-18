@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import WeatherDisplay from "../components/WeatherDisplay";
 import { Geolocation } from "@capacitor/geolocation";
-import { Coords, Meteo } from "src/types/meteo";
+import { Coords, RawWeather } from "src/types/meteo";
 import { IonPage, IonContent, IonButton } from "@ionic/react";
 import "./Search.css";
 import axios from "axios";
-import DailyWeatherDisplay from "src/components/DailyWeatherDisplay";
 import FavoriteButton from "src/components/FavoriteButton";
 import LocationWeatherDisplay from "src/components/LocationWeatherDisplay";
-import { getCoordsFromCityName, getCoordsMeteo } from "src/api/openweather";
+import { getCoordsFromCityName, getCurrentRawWeather } from "src/api/openweather";
 
 const key = "d0d65cf050b84b0ab3cea15f4cac461e";
 
@@ -23,7 +22,7 @@ type City = {
 const Search = () => {
   const [search, setsearch] = useState("");
   const [loading, setloading] = useState(false);
-  const [meteo, setmeteo] = useState<Meteo>();
+  const [meteo, setmeteo] = useState<RawWeather>();
   const [coords, setcoords] = useState<Coords>();
   const [city, setcity] = useState("");
 
@@ -41,7 +40,7 @@ const Search = () => {
   };
 
   const fetchMeteo = (coords: Coords) => {
-    getCoordsMeteo(coords)
+    getCurrentRawWeather(coords)
       .then((response) => {
         setmeteo(response.data);
       })
@@ -70,7 +69,7 @@ const Search = () => {
           {!loading && meteo && (
             <>
               <FavoriteButton city={city} coords={coords!} />
-              <LocationWeatherDisplay meteo={meteo} />
+              <LocationWeatherDisplay rawWeather={meteo} />
             </>
           )}
         </div>

@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { Geolocation } from "@capacitor/geolocation";
-import { Meteo } from "src/types/meteo";
+import { RawWeather } from "src/types/meteo";
 import "./Home.css";
 import { IonPage, IonContent } from "@ionic/react";
 import LocationWeatherDisplay from "src/components/LocationWeatherDisplay";
-import { getCoordsMeteo } from "src/api/openweather";
+import { getCurrentRawWeather } from "src/api/openweather";
 import FavoriteButton from "src/components/FavoriteButton";
 
 const Home = () => {
-  const [meteo, setmeteo] = useState<Meteo>();
+  const [meteo, setmeteo] = useState<RawWeather>();
 
   const fetchUserMeteo = async () => {
     const coordinates = await Geolocation.getCurrentPosition();
@@ -18,7 +18,7 @@ const Home = () => {
       lon: coordinates.coords.longitude,
     };
 
-    getCoordsMeteo(coords).then((response) => {
+    getCurrentRawWeather(coords).then((response) => {
       setmeteo(response.data);
     });
   };
@@ -43,7 +43,7 @@ const Home = () => {
                 coords={{ lat: meteo.lat, lon: meteo.lon }}
                 city={"Météo locale"}
               />
-              <LocationWeatherDisplay meteo={meteo} />
+              <LocationWeatherDisplay rawWeather={meteo} />
             </div>
           )}
         </div>

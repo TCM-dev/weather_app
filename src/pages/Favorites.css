@@ -1,0 +1,17 @@
+.favorites {
+  border-radius: 5px;
+  background-color: #121212;
+}
+
+.favorite-meteo {
+  display: block;
+}
+
+.favorite-meteo:not(:last-child) {
+  border-bottom: solid 1px #222;
+}
+
+.favorite-meteo .weather-display {
+  border-radius: 0;
+  background-color: unset;
+}

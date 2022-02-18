@@ -38,8 +38,8 @@ import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
 
 /* Theme variables */
-import "./theme/global.css";
 import "./theme/variables.css";
+import "./theme/global.css";
 import Search from "./pages/Search";
 import Home from "./pages/Home";
 import Favorites from "./pages/Favorites";

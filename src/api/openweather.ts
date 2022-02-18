@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { Coords, Meteo } from "src/types/meteo";
+import { Coords, RawWeather } from "src/types/meteo";
 
 const openweather = axios.create({
   baseURL: "https://api.openweathermap.org/",
@@ -17,8 +17,8 @@ openweather.interceptors.request.use(
   }
 );
 
-export const getCoordsMeteo = (coords: Coords) => {
-  return openweather.get<Meteo>("data/2.5/onecall", {
+export const getCurrentRawWeather = (coords: Coords) => {
+  return openweather.get<RawWeather>("data/2.5/onecall", {
     params: {
       lat: coords.lat,
       lon: coords.lon,

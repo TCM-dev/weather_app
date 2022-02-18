@@ -1,0 +1,35 @@
+/* .daily-weather-display {
+  margin-bottom: 1em;
+}
+
+.date {
+  margin-bottom: 0.5em;
+  display: inline-block;
+} */
+
+/* .weather-display {
+} */
+
+.daily-weather-display {
+  /* border-radius: 5px; */
+  padding: 1em;
+  display: flex;
+  flex-direction: row;
+}
+
+.daily-weather-display:not(:last-child) {
+  border-bottom: solid 1px #222;
+}
+
+.daily-weather-display .informations {
+  display: flex;
+  font-size: 14px;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5em;
+}
+
+.daily-weather-display p {
+  margin: 0;
+  color: #999;
+}
