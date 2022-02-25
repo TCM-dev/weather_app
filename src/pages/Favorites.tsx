@@ -1,6 +1,11 @@
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { Coords, RawWeather } from "src/types/meteo";
-import { IonPage, IonContent, IonButton } from "@ionic/react";
+import {
+  IonPage,
+  IonContent,
+  IonButton,
+  useIonViewDidEnter,
+} from "@ionic/react";
 import "./Favorites.css";
 import {
   getCoordsFromCityName,
@@ -20,7 +25,7 @@ const Favorites = () => {
   const [favorites, setfavorites] = useState<Favorite[]>([]);
   const [favoritemeteos, setfavoritemeteos] = useState<FavoriteMeteo[]>([]);
 
-  useEffect(() => {
+  const fetchFavorites = () => {
     let favoritesString = localStorage.getItem("favorites");
 
     if (!favoritesString) {
@@ -30,17 +35,23 @@ const Favorites = () => {
 
     const favorites: Favorite[] = JSON.parse(favoritesString);
     setfavorites(favorites);
-  }, []);
+  };
+
+  useIonViewDidEnter(fetchFavorites, []);
 
   useEffect(() => {
-    favorites.forEach((favorite) => {
-      getCurrentRawWeather(favorite.coords).then((response) => {
+    const requests = favorites.map((favorite) =>
+      getCurrentRawWeather(favorite.coords)
+    );
+
+    Promise.all(requests).then((responses) => {
+      const meteos = responses.map((response, index) => {
         const meteo = response.data;
-        setfavoritemeteos((favoritemeteos) => [
-          ...favoritemeteos,
-          { city: favorite.city, meteo },
-        ]);
+        const city = favorites[index].city;
+        return { city, meteo };
       });
+
+      setfavoritemeteos(meteos);
     });
   }, [favorites]);
 
